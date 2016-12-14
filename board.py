@@ -112,6 +112,16 @@ class Board(object):
                 if peice and peice.player_number == number:
                     peice.can_passant = False
 
+    def makeMove(self,move,player_direction):
+        if move[0] == 'QC' or move[0] == 'KC':
+            self.castle(move,player_direction)
+        else:
+            from_spot, to_spot = move[0], move[1]
+            if to_spot[0] == 'PR' or to_spot[0] == 'PL':
+                self.en_passant(to_spot[0],from_spot,player_direction)
+            else:
+                self.movePeice(from_spot[0],from_spot[1],to_spot[0],to_spot[1])
+
     def movePeice(self,from_row,from_col,to_row,to_col):
         peice = self.board[from_row][from_col]
         if peice:
@@ -151,6 +161,11 @@ class Board(object):
         new_board.movePeice(from_spot[0],from_spot[1],to_spot[0],to_spot[1])
         return new_board
 
+    def generateSuccessorFromMove(self,move,player_direction):
+        new_board = copy.deepcopy(self)
+        new_board.makeMove(move,player_direction)
+        return new_board
+
     def isInCheck(self,player_number):
         for i,row in enumerate(self.board):
             for j,peice in enumerate(row):
@@ -171,6 +186,42 @@ class Board(object):
                         return False
         return True
 
+    def isDraw(self):
+        total_peices = [peice for row in self.board for peice in row if peice != None]
+        if len(total_peices) == 2:
+            import pdb; pdb.set_trace()
+            return True
+        elif len(total_peices) == 3:
+            extra_peice = [peice for peice in total_peices if not isinstance(peice, King)][0]
+            if isinstance(extra_peice, Knight):
+                import pdb; pdb.set_trace()
+                return True
+            elif isinstance(extra_peice, Bisop):
+                import pdb; pdb.set_trace()
+                return True
+            else:
+                return False
+        else:
+            extra_peices = [peice for peice in total_peices if not isinstance(peice, King)]
+            not_bishops = [peice for piece in total_peices if not isinstance(peice, Bishop)]
+            if len(not_bishops) != 0:
+                return False
+            else:
+                colors = []
+                for i,row in enumerate(self.board):
+                    for j,peice in enumerate(row):
+                        if(isinstance(peice, Bishop)):
+                            colors.append((i + j) % 2)
+                if(len(set(colors)) == 1):
+                    import pdb; pdb.set_trace()
+                    return True
+                else:
+                    return False
+
+    def isStalemated(self,player_number):
+        all_moves = self.getAllMoves(player_number)
+        return len(all_moves) == 0
+
     def evaluate(self,player_number):
         player_points = 0
         opponent_points = 0
@@ -181,10 +232,7 @@ class Board(object):
                         player_points+=peice.getScore()
                     else:
                         opponent_points+=peice.getScore()
-
-        moves = self.getAllMoves(player_number)
-        attacks = self.getAllAttacks(player_number)
-        return (player_points - opponent_points) * 100 + len(attacks) * 10 + len(moves)
+        return (player_points - opponent_points)
 
     def printCell(self,x,y):
         cell = self.board[x][y]

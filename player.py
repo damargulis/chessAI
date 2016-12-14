@@ -21,6 +21,8 @@ class Player(object):
             name = "Player " + str(number)
         self.name = name
 
+        self.analyzed = 0
+
     def takeTurn(self,board):
         pass
 
@@ -126,7 +128,8 @@ class HumanPlayer(Player):
 
 class ComputerPlayer(Player):
     def takeTurn(self,board):
-        print(self.name + " Is thinking...")
+        print(self.name + " is thinking...")
+        print('score: ', board.evaluate(self.number))
         move = self.getMove(board)
         peice = board.getPeice(move[0][0],move[0][1])
         print("Moving " + peice.getFullName() + " to " + str(move[1]))
@@ -141,4 +144,62 @@ class ComputerPlayer(Player):
 
 
     def promote(self,peice,row,col,board):
-        pass
+        board.promote(self,row,col,'Q')
+
+class MinimaxPlayer(ComputerPlayer):
+
+    DEPTH = 3
+
+    def getMove(self,board):
+        self.analyzed = 0
+        all_possible_moves = board.getAllMoves(self.number)
+        possible_boards = [board.generateSuccessorFromMove(move,self.direction) for move in all_possible_moves]
+        inf = float('inf')
+        scores = [self.getMin(board,1,-1*inf,inf) for board in possible_boards]
+
+        print(all_possible_moves)
+        print(scores)
+        maxValue = max(scores)
+
+        bestActions = [a for a, v in zip(all_possible_moves, scores) if v == maxValue]
+        print('best:', bestActions)
+        return random.choice(bestActions)
+
+    def getMax(self,board,depth, alpha, beta):
+        # if(self.analyzed % 100 == 0):
+        #     print('Analyzed: ',self.analyzed)
+        if depth >= self.DEPTH:
+            self.analyzed += 1
+            return board.evaluate(self.number)
+        else:
+            all_possible_moves = board.getAllMoves(self.number)
+            v = -1 * float('inf')
+            for move in all_possible_moves:
+                possible_board = board.generateSuccessorFromMove(move,self.direction)
+                v = max(v, self.getMin(possible_board,depth+1,alpha,beta))
+                alpha = max(alpha,v)
+                if beta <= alpha:
+                    break
+            return v
+
+    def getMin(self,board,depth, alpha, beta):
+        # if(self.analyzed % 100 == 0):
+        #     print('Analyzed: ',self.analyzed)
+        player_number = int(not self.number)
+        player_direction = self.direction * -1
+        if depth >= self.DEPTH:
+            self.analyzed += 1
+            return board.evaluate(self.number)
+        else:
+            all_possible_moves = board.getAllMoves(player_number)
+            v = float('inf')
+            for move in all_possible_moves:
+                possible_board = board.generateSuccessorFromMove(move,self.direction)
+                v = min(v, self.getMax(possible_board, depth+1,alpha,beta))
+                beta = min(beta,v)
+                if beta <= alpha:
+                    break
+            return v
+
+    def promote(self,peice,row,col,board):
+        board.promote(self,row,col,'Q')
