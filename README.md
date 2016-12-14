@@ -31,14 +31,14 @@ TODO:
  - [x] Best current move agent
  - [x] Minimax agent
  - [x] Alpha/Beta prune w/ the minimax agent
- - [] Create additional evaluation functions
- - [] Allow for evaluation selection on commandline
- - [] Allow for depth for minimax on commandline
- - [] Allow for game number on command line...collect aggregate stats
- - [] Control for pawn promotion in the AI
+ - [ ] Create additional evaluation functions
+ - [ ] Allow for evaluation selection on commandline
+ - [ ] Allow for depth for minimax on commandline
+ - [ ] Allow for game number on command line...collect aggregate stats
+ - [ ] Control for pawn promotion in the AI
 
 
 RECOGNIZED BUGS:
- - [] Doesn't yet allow you to claim draw after 3 repeated moves--other weird draw rules
- - [] Neither computer agent knows to go for a check mate yet---oops
- - [] Game might be randomly stopping in a draw....?
+ - [ ] Doesn't yet allow you to claim draw after 3 repeated moves--other weird draw rules
+ - [ ] Neither computer agent knows to go for a check mate yet---oops
+ - [ ] Game might be randomly stopping in a draw....?
