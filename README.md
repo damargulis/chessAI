@@ -40,5 +40,4 @@ TODO:
 
 RECOGNIZED BUGS:
  - [ ] Doesn't yet allow you to claim draw after 3 repeated moves--other weird draw rules
- - [ ] Neither computer agent knows to go for a check mate yet---oops
  - [ ] Game might be randomly stopping in a draw....?
