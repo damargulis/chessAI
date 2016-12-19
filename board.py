@@ -196,7 +196,7 @@ class Board(object):
             if isinstance(extra_peice, Knight):
                 import pdb; pdb.set_trace()
                 return True
-            elif isinstance(extra_peice, Bisop):
+            elif isinstance(extra_peice, Bishop):
                 import pdb; pdb.set_trace()
                 return True
             else:
@@ -225,6 +225,10 @@ class Board(object):
     def evaluate(self,player_number):
         player_points = 0
         opponent_points = 0
+        if(self.isCheckmated(player_number)):
+            return -1 * float('inf')
+        elif(self.isCheckmated(int(not player_number))):
+            return float('inf')
         for row in self.board:
             for peice in row:
                 if peice:

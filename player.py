@@ -132,7 +132,8 @@ class ComputerPlayer(Player):
         print('score: ', board.evaluate(self.number))
         move = self.getMove(board)
         peice = board.getPeice(move[0][0],move[0][1])
-        print("Moving " + peice.getFullName() + " to " + str(move[1]))
+        if peice:
+            print("Moving " + peice.getFullName() + " to " + str(move[1]))
         board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
 
     def getMove(self,board):
@@ -140,6 +141,8 @@ class ComputerPlayer(Player):
         all_possible_moves = [move for move in all_possible_moves if str(move[0][0]).isdigit()]
         possible_boards = [board.generateSuccessor(move[0],move[1]) for move in all_possible_moves]
         scores = [board.evaluate(self.number) for board in possible_boards]
+        maxValue = max(scores)
+        best_actions = [a for a,v in zip(all_possible_moves, scores) if v == maxValue]
         return all_possible_moves[scores.index(max(scores))]
 
 
@@ -157,12 +160,12 @@ class MinimaxPlayer(ComputerPlayer):
         inf = float('inf')
         scores = [self.getMin(board,1,-1*inf,inf) for board in possible_boards]
 
-        print(all_possible_moves)
-        print(scores)
+        # print(all_possible_moves)
+        # print(scores)
         maxValue = max(scores)
 
         bestActions = [a for a, v in zip(all_possible_moves, scores) if v == maxValue]
-        print('best:', bestActions)
+        # print('best:', bestActions)
         return random.choice(bestActions)
 
     def getMax(self,board,depth, alpha, beta):
@@ -173,6 +176,8 @@ class MinimaxPlayer(ComputerPlayer):
             return board.evaluate(self.number)
         else:
             all_possible_moves = board.getAllMoves(self.number)
+            if(len(all_possible_moves) == 0):
+                return 0
             v = -1 * float('inf')
             for move in all_possible_moves:
                 possible_board = board.generateSuccessorFromMove(move,self.direction)
@@ -192,6 +197,8 @@ class MinimaxPlayer(ComputerPlayer):
             return board.evaluate(self.number)
         else:
             all_possible_moves = board.getAllMoves(player_number)
+            if len(all_possible_moves) == 0:
+                return 0
             v = float('inf')
             for move in all_possible_moves:
                 possible_board = board.generateSuccessorFromMove(move,self.direction)
