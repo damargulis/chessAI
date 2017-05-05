@@ -13,7 +13,8 @@ def printHelp():
 
 
 class Player(object):
-    def __init__(self,number,color,direction,name=""):
+    def __init__(self,number,color,direction,depth=3,name=""):
+        self.depth = int(depth)
         self.number = number
         self.team_color = color
         self.direction = direction
@@ -126,14 +127,17 @@ class HumanPlayer(Player):
             promotion = raw_input("Replace with (Q,R,K,B): ")
             done = board.promote(self,row,col,promotion)
 
+import time
+
 class ComputerPlayer(Player):
     def takeTurn(self,board):
         print(self.name + " is thinking...")
-        print('score: ', board.evaluate(self.number))
+        start = time.time()
         move = self.getMove(board)
         peice = board.getPeice(move[0][0],move[0][1])
+        end = time.time()
         if peice:
-            print("Moving " + peice.getFullName() + " to " + str(move[1]))
+            print("Moving " + peice.getFullName() + " to " + str(move[1]) + " Time: ", (end - start))
         board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
 
     def getMove(self,board):
@@ -149,11 +153,11 @@ class ComputerPlayer(Player):
     def promote(self,peice,row,col,board):
         board.promote(self,row,col,'Q')
 
+import sys
 class MinimaxPlayer(ComputerPlayer):
 
-    DEPTH = 3
-
     def getMove(self,board):
+
         self.analyzed = 0
         all_possible_moves = board.getAllMoves(self.number)
         possible_boards = [board.generateSuccessorFromMove(move,self.direction) for move in all_possible_moves]
@@ -165,14 +169,16 @@ class MinimaxPlayer(ComputerPlayer):
         maxValue = max(scores)
 
         bestActions = [a for a, v in zip(all_possible_moves, scores) if v == maxValue]
+        print('Analyzed: ', self.analyzed)
         # print('best:', bestActions)
         return random.choice(bestActions)
 
     def getMax(self,board,depth, alpha, beta):
-        # if(self.analyzed % 100 == 0):
-        #     print('Analyzed: ',self.analyzed)
-        if depth >= self.DEPTH:
+
+        if depth >= self.depth:
             self.analyzed += 1
+            print('Analyzed: ',self.analyze,end='\r')
+            sys.stdout.flush()
             return board.evaluate(self.number)
         else:
             all_possible_moves = board.getAllMoves(self.number)
@@ -188,12 +194,14 @@ class MinimaxPlayer(ComputerPlayer):
             return v
 
     def getMin(self,board,depth, alpha, beta):
-        # if(self.analyzed % 100 == 0):
-        #     print('Analyzed: ',self.analyzed)
+
         player_number = int(not self.number)
         player_direction = self.direction * -1
-        if depth >= self.DEPTH:
+        if depth >= self.depth:
             self.analyzed += 1
+            print('Analyzed: ',self.analyzed,end='\r')
+            sys.stdout.flush()
+
             return board.evaluate(self.number)
         else:
             all_possible_moves = board.getAllMoves(player_number)

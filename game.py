@@ -9,7 +9,7 @@ class Game(object):
             elif(options.white == 'ComputerPlayer'):
                 player1 = ComputerPlayer(0,'w',-1)
             elif(options.white == 'MinimaxPlayer'):
-                player1 = MinimaxPlayer(0,'w',-1)
+                player1 = MinimaxPlayer(0,'w',-1,depth=options.depth)
             else:
                 print('White Player Agent not recognized (user control is default)')
                 exit()
@@ -18,7 +18,7 @@ class Game(object):
             elif(options.black == 'ComputerPlayer'):
                 player2 = ComputerPlayer(1,'b',1)
             elif(options.black == 'MinimaxPlayer'):
-                player2 = MinimaxPlayer(1,'b',1)
+                player2 = MinimaxPlayer(1,'b',1,depth=options.depth)
             else:
                 print('Black Player Agent not recognized (computer control is default)')
                 exit()

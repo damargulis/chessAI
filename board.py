@@ -212,8 +212,11 @@ class Board(object):
                     for j,peice in enumerate(row):
                         if(isinstance(peice, Bishop)):
                             colors.append((i + j) % 2)
+                        elif (isinstance(peice, King)):
+                            continue
+                        else:
+                            return False
                 if(len(set(colors)) == 1):
-                    import pdb; pdb.set_trace()
                     return True
                 else:
                     return False
