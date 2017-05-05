@@ -33,8 +33,8 @@ TODO:
  - [x] Alpha/Beta prune w/ the minimax agent
  - [ ] Create additional evaluation functions
  - [ ] Allow for evaluation selection on commandline
- - [ ] Allow for depth for minimax on commandline
- - [ ] Allow for game number on command line...collect aggregate stats
+ - [x] Allow for depth for minimax on commandline
+ - [x] Allow for game number on command line...collect aggregate stats
  - [ ] Control for pawn promotion in the AI
 
 
