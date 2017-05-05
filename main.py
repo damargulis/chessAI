@@ -1,4 +1,4 @@
-from game import Game
+from game import Chess
 
 from optparse import OptionParser
 import sys
@@ -22,7 +22,7 @@ def main():
     options, otherjunk = parser.parse_args(sys.argv)
     print("Playing " + options.number + " game(s) of chess")
     for i in range(int(options.number)):
-        g = Game(options)
+        g = Chess(options)
         g.play()
 
 if __name__ == '__main__':

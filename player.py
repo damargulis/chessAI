@@ -160,6 +160,7 @@ class MinimaxPlayer(ComputerPlayer):
 
         self.analyzed = 0
         all_possible_moves = board.getAllMoves(self.number)
+        print(len(all_possible_moves), self.depth)
         possible_boards = [board.generateSuccessorFromMove(move,self.direction) for move in all_possible_moves]
         inf = float('inf')
         scores = [self.getMin(board,1,-1*inf,inf) for board in possible_boards]
