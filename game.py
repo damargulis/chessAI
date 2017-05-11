@@ -30,9 +30,12 @@ class Game(object):
         while(not gameOver):
             self.board.printBoard()
             player = self.players[playerTurn]
-            playerTurn = (playerTurn + 1) % len(self.players)
             player.takeTurn(self.board)
-            gameOver = self.checkGameOver(playerTurn)
+            gameOver, winner = self.checkGameOver(playerTurn)
+            playerTurn = (playerTurn + 1) % len(self.players)
+
+        self.board.printBoard()
+        return winner
 
 class Chess(Game):
         def __init__(self,options):
@@ -51,13 +54,14 @@ class Chess(Game):
                     if(self.board.isCheckmated(opponent.number)):
                         print("Check Mate!")
                         print(player.name + " Wins!")
-                        return True
+                        return True, playerNumber
                     else:
                         print("Check!")
-                        return False
+                        return False, None
                 elif(self.board.isDraw()):
                     print("It's a Draw!")
-                    return True
+                    return True, 'Ties'
                 elif(self.board.isStalemated(opponent.number)):
                     print(opponent.name + " has been stalemated.  Its a Draw!")
-                    return True
+                    return True, 'Ties'
+                return False, None

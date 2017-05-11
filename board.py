@@ -189,15 +189,12 @@ class Board(object):
     def isDraw(self):
         total_peices = [peice for row in self.board for peice in row if peice != None]
         if len(total_peices) == 2:
-            import pdb; pdb.set_trace()
             return True
         elif len(total_peices) == 3:
             extra_peice = [peice for peice in total_peices if not isinstance(peice, King)][0]
             if isinstance(extra_peice, Knight):
-                import pdb; pdb.set_trace()
                 return True
             elif isinstance(extra_peice, Bishop):
-                import pdb; pdb.set_trace()
                 return True
             else:
                 return False

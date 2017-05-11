@@ -1,5 +1,6 @@
 from game import Chess
 
+import collections
 from optparse import OptionParser
 import sys
 
@@ -21,9 +22,12 @@ def main():
 
     options, otherjunk = parser.parse_args(sys.argv)
     print("Playing " + options.number + " game(s) of chess")
+    scores = collections.Counter()
     for i in range(int(options.number)):
         g = Chess(options)
-        g.play()
+        winner = g.play()
+        scores[winner] += 1
+    print(scores)
 
 if __name__ == '__main__':
     main()

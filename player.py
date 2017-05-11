@@ -128,6 +128,7 @@ class HumanPlayer(Player):
             done = board.promote(self,row,col,promotion)
 
 import time
+import random
 
 class ComputerPlayer(Player):
     def takeTurn(self,board):
@@ -138,6 +139,8 @@ class ComputerPlayer(Player):
         end = time.time()
         if peice:
             print("Moving " + peice.getFullName() + " to " + str(move[1]) + " Time: ", (end - start))
+        else:
+            import pdb; pdb.set_trace
         board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
 
     def getMove(self,board):
@@ -147,7 +150,7 @@ class ComputerPlayer(Player):
         scores = [board.evaluate(self.number) for board in possible_boards]
         maxValue = max(scores)
         best_actions = [a for a,v in zip(all_possible_moves, scores) if v == maxValue]
-        return all_possible_moves[scores.index(max(scores))]
+        return random.choice(best_actions)
 
 
     def promote(self,peice,row,col,board):
@@ -160,7 +163,6 @@ class MinimaxPlayer(ComputerPlayer):
 
         self.analyzed = 0
         all_possible_moves = board.getAllMoves(self.number)
-        print(len(all_possible_moves), self.depth)
         possible_boards = [board.generateSuccessorFromMove(move,self.direction) for move in all_possible_moves]
         inf = float('inf')
         scores = [self.getMin(board,1,-1*inf,inf) for board in possible_boards]
@@ -178,7 +180,7 @@ class MinimaxPlayer(ComputerPlayer):
 
         if depth >= self.depth:
             self.analyzed += 1
-            print('Analyzed: ',self.analyze,end='\r')
+            print('Analyzed: ',self.analyzed,end='\r')
             sys.stdout.flush()
             return board.evaluate(self.number)
         else:
