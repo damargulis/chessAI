@@ -140,7 +140,8 @@ class ComputerPlayer(Player):
         if peice:
             print("Moving " + peice.getFullName() + " to " + str(move[1]) + " Time: ", (end - start))
         else:
-            import pdb; pdb.set_trace
+            import pdb; pdb.set_trace()
+            print ("!!!!!!!!!!!!!!!!!!!!")
         board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
 
     def getMove(self,board):

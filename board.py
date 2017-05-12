@@ -69,8 +69,8 @@ class Board(object):
                                     check2 = self.generateSuccessor((i,j),(i,2))
                                     check3 = self.generateSuccessor((i,j),(i,1))
                                     if not check1.isInCheck(player_number) and not check2.isInCheck(player_number) and not check3.isInCheck(player_number):
+                                        #import pdb; pdb.set_trace()
                                         all_possible_moves.append(("QC","QC"))
-
 
         return all_possible_moves
 

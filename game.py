@@ -57,7 +57,7 @@ class Chess(Game):
                 self.positionCounter[boardTuple] += 1
                 if(self.positionCounter[boardTuple] > 3):
                     print("It's a Draw by threefold, (this should eventually be a choice...)")
-                    return True, -1
+                    return True, 'Ties'
 
                 if(self.board.isInCheck(opponent.number)):
                     if(self.board.isCheckmated(opponent.number)):
