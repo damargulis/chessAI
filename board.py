@@ -252,7 +252,6 @@ class Board(object):
             print(cell.team_color + cell.getName(), end="")
 
     def printBoard(self):
-        return
         print("  " + '  '.join([" " + str(x) for x in range(len(self.board[0]))]))
         for i in range(self.height):
             print(i,end="")
