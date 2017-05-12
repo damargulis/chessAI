@@ -1,5 +1,6 @@
 from player import *
 from board import Board
+import collections
 
 class Game(object):
     def __init__(self,options):
@@ -40,6 +41,8 @@ class Game(object):
 class Chess(Game):
         def __init__(self,options):
             super(Chess, self).__init__(options)
+            self.positionCounter = collections.Counter()
+            self.positionCounter[self.board.toTuple()] += 1
 
         def checkGameOver(self, playerNumber):
                 player = self.players[playerNumber]
@@ -49,6 +52,12 @@ class Chess(Game):
                 for peice,row,col in self.board.getPromotions(player):
                     player.promote(peice,row,col,self.board)
                     self.board.printBoard()
+
+                boardTuple = self.board.toTuple()
+                self.positionCounter[boardTuple] += 1
+                if(self.positionCounter[boardTuple] > 3):
+                    print("It's a Draw by threefold, (this should eventually be a choice...)")
+                    return True, -1
 
                 if(self.board.isInCheck(opponent.number)):
                     if(self.board.isCheckmated(opponent.number)):

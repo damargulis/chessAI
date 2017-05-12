@@ -27,7 +27,14 @@ def main():
         g = Chess(options)
         winner = g.play()
         scores[winner] += 1
-    print(scores)
+
+    print
+    print('Score:')
+    for player in scores:
+        message = str(player) + ': ' + str(scores[player])
+        if player != 'Ties':
+            message = 'Player ' + message
+        print(message)
 
 if __name__ == '__main__':
     main()

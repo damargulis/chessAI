@@ -39,5 +39,5 @@ TODO:
 
 
 RECOGNIZED BUGS:
- - [ ] Doesn't yet allow you to claim draw after 3 repeated moves--other weird draw rules
+ - [ ] Doesn't yet allow you to claim draw after 3 repeated moves
  - [ ] Game might be randomly stopping in a draw....?
