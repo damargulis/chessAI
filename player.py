@@ -21,7 +21,6 @@ class Player(object):
         if name == "":
             name = "Player " + str(number)
         self.name = name
-
         self.analyzed = 0
 
     def takeTurn(self,board):
@@ -139,10 +138,13 @@ class ComputerPlayer(Player):
         end = time.time()
         if peice:
             print("Moving " + peice.getFullName() + " to " + str(move[1]) + " Time: ", (end - start))
+            board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
         else:
-            import pdb; pdb.set_trace()
-            print ("!!!!!!!!!!!!!!!!!!!!")
-        board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
+            if move[0] == 'KC' or move[0] == 'QC':
+                board.castle(move[0], self.direction)
+            else:
+                import pdb; pdb.set_trace()
+                print ("!!!!!!!!!!!!!!!!!!!!")
 
     def getMove(self,board):
         all_possible_moves = board.getAllMoves(self.number)
