@@ -180,6 +180,8 @@ class Board(object):
         return False
 
     def isCheckmated(self,player_number):
+        if not self.isInCheck(player_number):
+            return False
         for i,row in enumerate(self.board):
             for j,peice in enumerate(row):
                 if peice and peice.player_number == player_number:
@@ -231,6 +233,10 @@ class Board(object):
             return -1 * float('inf')
         elif(self.isCheckmated(int(not player_number))):
             return float('inf')
+        elif(self.isStalemated(player_number)):
+            return 0
+        elif(self.isDraw()):
+            return 0
         for row in self.board:
             for peice in row:
                 if peice:

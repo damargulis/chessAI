@@ -189,14 +189,17 @@ class MinimaxPlayer(ComputerPlayer):
         else:
             all_possible_moves = board.getAllMoves(self.number)
             if(len(all_possible_moves) == 0):
-                return 0
+                self.analyzed += 1
+                print('Analyzed: ', self.analyzed, end='\r')
+                sys.stdout.flush()
+                return board.evaluate(self.number)
             v = -1 * float('inf')
             for move in all_possible_moves:
                 possible_board = board.generateSuccessorFromMove(move,self.direction)
                 v = max(v, self.getMin(possible_board,depth+1,alpha,beta))
                 alpha = max(alpha,v)
                 if beta <= alpha:
-                    break
+                    return v
             return v
 
     def getMin(self,board,depth, alpha, beta):
@@ -212,14 +215,17 @@ class MinimaxPlayer(ComputerPlayer):
         else:
             all_possible_moves = board.getAllMoves(player_number)
             if len(all_possible_moves) == 0:
-                return 0
+                self.analyzed += 1
+                print('Analyzed: ', self.analyzed, end='\r')
+                sys.stdout.flush()
+                return board.evaluate(self.number)
             v = float('inf')
             for move in all_possible_moves:
                 possible_board = board.generateSuccessorFromMove(move,self.direction)
                 v = min(v, self.getMax(possible_board, depth+1,alpha,beta))
                 beta = min(beta,v)
                 if beta <= alpha:
-                    break
+                    return v
             return v
 
     def promote(self,peice,row,col,board):
