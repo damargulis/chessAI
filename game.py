@@ -29,11 +29,15 @@ class Game(object):
         while(not gameOver):
             self.board.printBoard()
             player = self.players[playerTurn]
+            print(player.name + "'s Turn")
             player.takeTurn(self.board)
             gameOver, winner = self.checkGameOver(playerTurn)
             playerTurn = (playerTurn + 1) % len(self.players)
-
         self.board.printBoard()
+        if(winner == 'Ties'):
+            print("Its a draw!")
+        else:
+            print(self.players[winner].name + ' Wins!')
         return winner
 
 class Chess(Game):
@@ -54,21 +58,17 @@ class Chess(Game):
                 boardTuple = self.board.toTuple()
                 self.positionCounter[boardTuple] += 1
                 if(self.positionCounter[boardTuple] > 3):
-                    print("It's a Draw by threefold, (this should eventually be a choice...)")
+                    print("Threefold repitition, (this should eventually be a choice...)")
                     return True, 'Ties'
 
                 if(self.board.isInCheck(opponent.number)):
                     if(self.board.isCheckmated(opponent.number)):
                         print("Check Mate!")
-                        print(player.name + " Wins!")
                         return True, playerNumber
                     else:
                         print("Check!")
                         return False, None
-                elif(self.board.isDraw()):
-                    print("It's a Draw!")
-                    return True, 'Ties'
-                elif(self.board.isStalemated(opponent.number)):
-                    print(opponent.name + " has been stalemated.  Its a Draw!")
+                elif(self.board.isDraw() or self.board.isStalemated(opponent.number)):
+                    print(opponent.name + " has been stalemated")
                     return True, 'Ties'
                 return False, None

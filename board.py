@@ -73,6 +73,16 @@ class Board(object):
 
         return all_possible_moves
 
+    def hasMoves(self, player_number):
+        all_possible_moves = []
+        for i,row in enumerate(self.board):
+            for j, peice in enumerate(row):
+                if peice and peice.player_number == player_number:
+                    moves = peice.getPossibleMoves(self,i,j)
+                    if len(moves) > 0:
+                        return True
+        return False
+
     def getAllAttacks(self, player_number):
         all_possible_attacks = []
         for i,row in enumerate(self.board):
@@ -223,8 +233,7 @@ class Board(object):
                     return False
 
     def isStalemated(self,player_number):
-        all_moves = self.getAllMoves(player_number)
-        return len(all_moves) == 0
+        return not self.hasMoves(player_number)
 
     def evaluate(self,player_number):
         player_points = 0

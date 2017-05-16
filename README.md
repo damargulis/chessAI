@@ -1,7 +1,7 @@
 Chess game and AI agent
 
 USAGE:
- * python main.py 
+ * python main.py
      * default game (human plays as white, random-computer plays as black)
  * python main.py -w MinimaxPlayer -b HumanPlayer
      * human plays as black, minimax agent plays as white
@@ -29,15 +29,6 @@ TODO:
  - [x] Playable chess game
  - [x] User controls and AI controls
  - [x] Best current move agent
- - [x] Minimax agent
- - [x] Alpha/Beta prune w/ the minimax agent
+ - [x] Minimax agent w/ alpha/beta pruning
  - [ ] Create additional evaluation functions
- - [ ] Allow for evaluation selection on commandline
- - [x] Allow for depth for minimax on commandline
- - [x] Allow for game number on command line...collect aggregate stats
  - [ ] Control for pawn promotion in the AI
-
-
-RECOGNIZED BUGS:
- - [ ] Doesn't yet allow you to claim draw after 3 repeated moves
- - [ ] Game might be randomly stopping in a draw....?

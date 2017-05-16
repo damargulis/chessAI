@@ -24,6 +24,8 @@ class Player(object):
         self.analyzed = 0
 
     def takeTurn(self,board):
+        move = self._get_move(board)
+        board.make_move(move)
         pass
 
     def promote(self,peice,row,col):
@@ -32,8 +34,6 @@ class Player(object):
 class HumanPlayer(Player):
 
     def takeTurn(self,board):
-        print(self.name + "'s Turn")
-
         all_possible_moves = board.getAllMoves(self.number)
         possible_peice_spots = [move[0] for move in all_possible_moves]
 
