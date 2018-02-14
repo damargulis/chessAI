@@ -1,5 +1,4 @@
-from game import Chess
-
+from game import Chess 
 import collections
 from optparse import OptionParser
 import sys

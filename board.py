@@ -242,9 +242,7 @@ class Board(object):
             return -1 * float('inf')
         elif(self.isCheckmated(int(not player_number))):
             return float('inf')
-        elif(self.isStalemated(player_number)):
-            return 0
-        elif(self.isDraw()):
+        elif(self.isStalemated(player_number) or self.isDraw()):
             return 0
         for row in self.board:
             for peice in row:

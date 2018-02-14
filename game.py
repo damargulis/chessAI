@@ -6,6 +6,7 @@ player_options = {
     'HumanPlayer': HumanPlayer,
     'ComputerPlayer': ComputerPlayer,
     'MinimaxPlayer': MinimaxPlayer,
+    'RandomPlayer': RandomPlayer,
 }
 
 class Game(object):

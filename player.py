@@ -13,7 +13,8 @@ def printHelp():
 
 
 class Player(object):
-    def __init__(self,number,color,direction,depth=3,name=""):
+    def __init__(self,number,color,direction,depth=3,name="",display=True):
+        self.display = display
         self.depth = int(depth)
         self.number = number
         self.team_color = color
@@ -131,16 +132,20 @@ import random
 
 class ComputerPlayer(Player):
     def takeTurn(self,board):
-        print(self.name + " is thinking...")
+        if self.display:
+            print(self.name + " is thinking...")
         start = time.time()
         move = self.getMove(board)
         peice = board.getPeice(move[0][0],move[0][1])
         end = time.time()
         if peice:
-            print("Moving " + peice.getFullName() + " to " + str(move[1]) + " Time: ", (end - start))
+            if self.display:
+                print("Moving " + peice.getFullName() + " to " + str(move[1]) + " Time: ", (end - start))
             board.movePeice(move[0][0],move[0][1],move[1][0],move[1][1])
         else:
             if move[0] == 'KC' or move[0] == 'QC':
+                if self.display:
+                    print('Castling.  Time: ', (end - start))
                 board.castle(move[0], self.direction)
             else:
                 import pdb; pdb.set_trace()
@@ -148,7 +153,6 @@ class ComputerPlayer(Player):
 
     def getMove(self,board):
         all_possible_moves = board.getAllMoves(self.number)
-        all_possible_moves = [move for move in all_possible_moves if str(move[0][0]).isdigit()]
         possible_boards = [board.generateSuccessor(move[0],move[1]) for move in all_possible_moves]
         scores = [board.evaluate(self.number) for board in possible_boards]
         maxValue = max(scores)
@@ -158,6 +162,11 @@ class ComputerPlayer(Player):
 
     def promote(self,peice,row,col,board):
         board.promote(self,row,col,'Q')
+
+class RandomPlayer(ComputerPlayer):
+    def getMove(self,board):
+        all_possible_moves = board.getAllMoves(self.number)
+        return random.choice(all_possible_moves)
 
 import sys
 class MinimaxPlayer(ComputerPlayer):
@@ -175,7 +184,8 @@ class MinimaxPlayer(ComputerPlayer):
         maxValue = max(scores)
 
         bestActions = [a for a, v in zip(all_possible_moves, scores) if v == maxValue]
-        print('Analyzed: ', self.analyzed)
+        if self.display:
+            print('Analyzed: ', self.analyzed)
         # print('best:', bestActions)
         return random.choice(bestActions)
 
@@ -183,14 +193,16 @@ class MinimaxPlayer(ComputerPlayer):
 
         if depth >= self.depth:
             self.analyzed += 1
-            print('Analyzed: ',self.analyzed,end='\r')
+            if self.display:
+                print('Analyzed: ',self.analyzed,end='\r')
             sys.stdout.flush()
             return board.evaluate(self.number)
         else:
             all_possible_moves = board.getAllMoves(self.number)
             if(len(all_possible_moves) == 0):
                 self.analyzed += 1
-                print('Analyzed: ', self.analyzed, end='\r')
+                if self.display:
+                    print('Analyzed: ', self.analyzed, end='\r')
                 sys.stdout.flush()
                 return board.evaluate(self.number)
             v = -1 * float('inf')
@@ -208,7 +220,8 @@ class MinimaxPlayer(ComputerPlayer):
         player_direction = self.direction * -1
         if depth >= self.depth:
             self.analyzed += 1
-            print('Analyzed: ',self.analyzed,end='\r')
+            if self.display:
+                print('Analyzed: ',self.analyzed,end='\r')
             sys.stdout.flush()
 
             return board.evaluate(self.number)
@@ -216,7 +229,8 @@ class MinimaxPlayer(ComputerPlayer):
             all_possible_moves = board.getAllMoves(player_number)
             if len(all_possible_moves) == 0:
                 self.analyzed += 1
-                print('Analyzed: ', self.analyzed, end='\r')
+                if self.display:
+                    print('Analyzed: ', self.analyzed, end='\r')
                 sys.stdout.flush()
                 return board.evaluate(self.number)
             v = float('inf')
